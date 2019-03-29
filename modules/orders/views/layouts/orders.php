@@ -4,9 +4,9 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use app\assets\OrdersAsset;
+//use app\assets\OrdersAsset;
 
-OrdersAsset::register($this);
+//OrdersAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -18,6 +18,8 @@ OrdersAsset::register($this);
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
     <style>
     .label-default{
       border: 1px solid #ddd;
@@ -53,6 +55,8 @@ OrdersAsset::register($this);
     <?= $content ?>
 </div>
 
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <?php $this->endBody() ?>
 </body>
 </html>
