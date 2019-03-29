@@ -70,6 +70,32 @@ class DefaultController extends Controller
         ]);
     }
 
+    public function actionExport() {
+        $data = "ID;User;Link;Quantity;Service;Status;Mode;Created\r\n";
+
+        $params = Yii::$app->request->get();
+        $searchModel = new OrdersSearch();
+        $query = $searchModel->search($params);
+
+        $orders = $query->orderBy('id desc')
+            ->all();
+        foreach ($orders as $order) {
+            $data .= $order->id.
+                    ';' . $order->user .
+                    ';' . $order->link .
+                    ';' . $order->quantity .
+                    ';' . $order->service->name .
+                    ';' . $order->getStatusText() .
+                    ';' . $order->getModeText() .
+                    ';' . $order->getDateText() . ' ' . $order->getTimeText() .
+                    "\r\n";
+        }
+        header('Content-type: text/csv');
+        header('Content-Disposition: attachment; filename="export_' . date('d.m.Y') . '.csv"');
+        echo iconv('utf-8', 'windows-1251', $data); //fix for Windows
+        exit;
+    }
+
     /**
      * Displays a single Orders model.
      * @param integer $id

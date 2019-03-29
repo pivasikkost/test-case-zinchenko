@@ -128,6 +128,7 @@ $this->title = Yii::t('app', 'Orders');
       <?= LinkPager::widget(['pagination' => $pagination]) ?>
     </div>
     <div class="col-sm-4 pagination-counters">
+      <div class="col-sm-12">
       <?php if ($pagination->getPageCount() > 1): ?>
         <?= $pagination->getPage() + 1 ?>
           to
@@ -137,6 +138,10 @@ $this->title = Yii::t('app', 'Orders');
       <?php else: ?>
         <?= $pagination->totalCount ?>
       <?php endif ?>
+      </div>
+      <div class="col-sm-12">
+      <?= Html::a(Yii::t('app', 'Save result'), $params+['export'], ['class' => 'link']) ?>
+      </div>
     </div>
 
   </div>
