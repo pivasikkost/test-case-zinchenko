@@ -42,39 +42,23 @@ class OrdersSearch extends Orders
     {
         $query = Orders::find();
 
-        // add conditions that should always apply here
-
-        /*$dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => [
-                'defaultOrder' => ['id' => SORT_DESC],
-            ],
-        ]);
-
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }*/
+        $filter = [];
+        if (isset($params['status']) && $params['status']!== '') {
+            $filter['status'] = $params['status'];
+        }
+        if (isset($params['mode']) && $params['mode']!== '') {
+            $filter['mode'] = $params['mode'];
+        }
+        if (!empty($params['search-type']) && isset($params['search'])) {
+            $attr = Orders::$search_types[$params['search-type']];
+            $filter[$attr] = $params['search'];
+        }
+        if (isset($params['service_id']) && $params['service_id']!== '') {
+            $filter['service_id'] = $params['service_id'];
+        }
 
         $query->joinWith('service');
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'quantity' => $this->quantity,
-            'service_id' => $this->service_id,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'mode' => $this->mode,
-        ]);
-
-        $query->andFilterWhere(['like', 'user', $this->user])
-            ->andFilterWhere(['like', 'link', $this->link]);
-
-        //$query->orderBy("id desc");
+        $query->filterWhere($filter);
 
         return $query;
     }

@@ -50,7 +50,7 @@ class Services extends \yii\db\ActiveRecord
         $query->leftJoin('orders', 'orders.service_id = services.id');
         $query->groupBy('id');
 
-        return $query->all();;
+        return $query->all();
     }
 
 }

@@ -39,7 +39,7 @@ class DefaultController extends Controller
     {
         $params = Yii::$app->request->get();
         $searchModel = new OrdersSearch();
-        $query = $searchModel->search(Yii::$app->request->queryParams);
+        $query = $searchModel->search($params);
 
         $services = Services::getServices();
         $services_new = array();

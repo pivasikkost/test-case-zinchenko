@@ -18,7 +18,7 @@ use Yii;
  */
 class Orders extends \yii\db\ActiveRecord
 {
-    private  static $statuses = [
+    protected  static $statuses = [
         0 => 'Pending',
         1 => 'In progress',
         2 => 'Completed',
@@ -26,12 +26,12 @@ class Orders extends \yii\db\ActiveRecord
         4 => 'Error'
     ];
 
-    private static $modes = [
+    protected static $modes = [
         0 => 'Manual',
         1 => 'Auto',
     ];
     
-    private static $search_types = [
+    protected static $search_types = [
         1 => 'orders.id',
         2 => 'link',
         3 => 'user'

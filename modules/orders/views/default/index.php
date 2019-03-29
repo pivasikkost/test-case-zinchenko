@@ -11,20 +11,22 @@ use yii\widgets\LinkPager;
 $this->title = Yii::t('app', 'Orders');
 ?>
 <ul class="nav nav-tabs p-b">
-    <li class="<?= !isset($params['status']) ? 'active' : '' ?>">
-        <a href="<?= Url::current([], true) ?>"><?= Yii::t('app', 'All orders') ?></a>
+    <li class="<?= !isset($params['status']) || $params['status'] == '' ? 'active' : '' ?>">
+        <a href="<?= Url::current(['status' => null, 'mode' => null, 'service_id' => null, 'page' => null], true) ?>"><?= Yii::t('app', 'All orders') ?></a>
     </li>
     <?php foreach ($statuses as $key => $status): ?>
-        <li class="<?= (isset($params['status']) && $params['status'] === $key) ? 'active' : '' ?>">
-            <a href="<?= Url::current(['status' => $key], true) ?>">
+        <li class="<?= (isset($params['status']) && $params['status'] != '' && $params['status'] == $key) ? 'active' : '' ?>">
+            <a href="<?= Url::current(['status' => $key, 'mode' => null, 'service_id' => null, 'page' => null], true) ?>">
                 <?= $status ?>
             </a>
         </li>
     <?php endforeach; ?>
     <li class="pull-right custom-search">
-      <form class="form-inline" action="/admin/orders" method="get">
+      <form class="form-inline" method="get">
+        <input hidden type="text" name="r" value="orders">
+        <input hidden type="text" name="status" value="<?= isset($params['status']) ? $params['status'] : '' ?>" />
         <div class="input-group">
-          <input type="text" name="search" class="form-control" value="" placeholder="Search orders">
+          <input type="text" name="search" class="form-control" value="<?= isset($params['search']) ? $params['search'] : '' ?>" placeholder="Search orders">
           <span class="input-group-btn search-select-wrap">
 
             <select class="form-control search-select" name="search-type">
