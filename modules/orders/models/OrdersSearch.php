@@ -44,8 +44,11 @@ class OrdersSearch extends Orders
 
         // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
+        /*$dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['id' => SORT_DESC],
+            ],
         ]);
 
         $this->load($params);
@@ -54,7 +57,9 @@ class OrdersSearch extends Orders
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
-        }
+        }*/
+
+        $query->joinWith('service');
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -69,6 +74,8 @@ class OrdersSearch extends Orders
         $query->andFilterWhere(['like', 'user', $this->user])
             ->andFilterWhere(['like', 'link', $this->link]);
 
-        return $dataProvider;
+        //$query->orderBy("id desc");
+
+        return $query;
     }
 }

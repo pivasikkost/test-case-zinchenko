@@ -18,6 +18,41 @@ use Yii;
  */
 class Orders extends \yii\db\ActiveRecord
 {
+    private  static $statuses = [
+        0 => 'Pending',
+        1 => 'In progress',
+        2 => 'Completed',
+        3 => 'Canceled',
+        4 => 'Error'
+    ];
+
+    private static $modes = [
+        0 => 'Manual',
+        1 => 'Auto',
+    ];
+    
+    private static $search_types = [
+        1 => 'orders.id',
+        2 => 'link',
+        3 => 'user'
+    ];
+
+    /**
+     * @return array
+     */
+    public static function getStatuses()
+    {
+        return self::$statuses;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getModes()
+    {
+        return self::$modes;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -54,4 +89,30 @@ class Orders extends \yii\db\ActiveRecord
             'mode' => Yii::t('app', 'Mode'),
         ];
     }
+
+    public function getService()
+    {
+        return $this->hasOne(Services::class, ['id' => 'service_id']);
+    }
+
+    public function getStatusText()
+    {
+        return self::$statuses[(int)$this->status];
+    }
+
+    public function getModeText()
+    {
+        return self::$modes[(int)$this->mode];
+    }
+
+    public function getDateText()
+    {
+        return gmdate("Y-m-d", $this->created_at);
+    }
+
+    public function getTimeText()
+    {
+        return gmdate("H:i:s", $this->created_at);
+    }
+
 }

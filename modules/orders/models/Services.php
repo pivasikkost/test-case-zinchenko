@@ -3,6 +3,7 @@
 namespace app\modules\orders\models;
 
 use Yii;
+use \yii\db\Query;
 
 /**
  * This is the model class for table "services".
@@ -41,4 +42,15 @@ class Services extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
         ];
     }
+
+    public static function getServices()  {
+        $query = new Query();
+        $query->select(['count(*) as orders_count', 'services.*' ]);
+        $query->from('services');
+        $query->leftJoin('orders', 'orders.service_id = services.id');
+        $query->groupBy('id');
+
+        return $query->all();;
+    }
+
 }

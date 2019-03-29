@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\helpers\Url;
+use yii\widgets\LinkPager;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\orders\models\OrdersSearch */
@@ -10,12 +11,16 @@ use yii\grid\GridView;
 $this->title = Yii::t('app', 'Orders');
 ?>
 <ul class="nav nav-tabs p-b">
-    <li class="active"><a href="#">All orders</a></li>
-    <li><a href="#">Pending</a></li>
-    <li><a href="#">In progress</a></li>
-    <li><a href="#">Completed</a></li>
-    <li><a href="#">Canceled</a></li>
-    <li><a href="#">Error</a></li>
+    <li class="<?= !isset($params['status']) ? 'active' : '' ?>">
+        <a href="<?= Url::current([], true) ?>"><?= Yii::t('app', 'All orders') ?></a>
+    </li>
+    <?php foreach ($statuses as $key => $status): ?>
+        <li class="<?= (isset($params['status']) && $params['status'] === $key) ? 'active' : '' ?>">
+            <a href="<?= Url::current(['status' => $key], true) ?>">
+                <?= $status ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
     <li class="pull-right custom-search">
       <form class="form-inline" action="/admin/orders" method="get">
         <div class="input-group">
@@ -23,9 +28,15 @@ $this->title = Yii::t('app', 'Orders');
           <span class="input-group-btn search-select-wrap">
 
             <select class="form-control search-select" name="search-type">
-              <option value="1" selected="">Order ID</option>
-              <option value="2">Link</option>
-              <option value="3">Username</option>
+              <option value="1" <?= (isset($params['search-type']) && $params['search-type'] == 1) ? 'selected' : '' ?>>
+                <?= Yii::t('app', 'Order ID') ?>
+              </option>
+              <option value="2" <?= (isset($params['search-type']) && $params['search-type'] == 2) ? 'selected' : '' ?>>
+                <?= Yii::t('app', 'Link') ?>
+              </option>
+              <option value="3" <?= (isset($params['search-type']) && $params['search-type'] == 3) ? 'selected' : '' ?>>
+                <?= Yii::t('app', 'Username') ?>
+              </option>
             </select>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
             </span>
@@ -36,119 +47,94 @@ $this->title = Yii::t('app', 'Orders');
   <table class="table order-table">
     <thead>
     <tr>
-      <th>ID</th>
-      <th>User</th>
-      <th>Link</th>
-      <th>Quantity</th>
+      <th><?= Yii::t('app', 'ID') ?></th>
+      <th><?= Yii::t('app', 'User') ?></th>
+      <th><?= Yii::t('app', 'Link') ?></th>
+      <th><?= Yii::t('app', 'Quantity') ?></th>
       <th class="dropdown-th">
         <div class="dropdown">
           <button class="btn btn-th btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Service
+            <?= Yii::t('app', 'Service') ?>
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li class="active"><a href="">All (894931)</a></li>
-            <li><a href=""><span class="label-id">214</span>  Real Views</a></li>
-            <li><a href=""><span class="label-id">215</span> Page Likes</a></li>
-            <li><a href=""><span class="label-id">10</span> Page Likes</a></li>
-            <li><a href=""><span class="label-id">217</span> Page Likes</a></li>
-            <li><a href=""><span class="label-id">221</span> Followers</a></li>
-            <li><a href=""><span class="label-id">224</span> Groups Join</a></li>
-            <li><a href=""><span class="label-id">230</span> Website Likes</a></li>
+            <li class="<?= !isset($params['service_id']) ? 'active' : '' ?>">
+                <a href="<?= Url::current(['service_id' => null, 'page' => null], true) ?>">
+                  <?= Yii::t('app', 'All') .'('. $pagination->totalCount .')' ?>
+                </a>
+            </li>
+            <?php foreach ($services as $key => $service): ?>
+                <li class="<?= (isset($params['service_id']) && $params['service_id'] == $key) ? 'active' : '' ?>">
+                    <a href="<?= Url::current(['service_id' => $key, 'page' => null], true) ?>">
+                        <span class="label-id"><?= $service['orders_count'] ?></span>
+                        <?= $service['name'] ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
           </ul>
         </div>
       </th>
-      <th>Status</th>
+      <th><?= Yii::t('app', 'Status') ?></th>
       <th class="dropdown-th">
         <div class="dropdown">
           <button class="btn btn-th btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Mode
+            <?= Yii::t('app', 'Mode') ?>
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li class="active"><a href="">All</a></li>
-            <li><a href="">Manual</a></li>
-            <li><a href="">Auto</a></li>
+            <li class="<?= !isset($params['mode']) ? 'active' : '' ?>">
+                <a href="<?= Url::current(['mode' => null, 'page' => null], true) ?>">
+                  <?= Yii::t('app', 'All') ?>
+                </a>
+            </li>
+            <?php foreach ($modes as $key => $mode): ?>
+                <li class="<?= (isset($params['mode']) && $params['mode'] == $key) ? 'active' : '' ?>">
+                    <a href="<?= Url::current(['mode' => $key, 'page' => null], true) ?>">
+                      <?= $mode ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
           </ul>
         </div>
       </th>
-      <th>Created</th>
+      <th><?= Yii::t('app', 'Created') ?></th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>558931</td>
-      <td>waliullah</td>
-      <td class="link">/p/BMRSv4FDevy/</td>
-      <td>3000</td>
-      <td class="service">
-        <span class="label-id">213</span>Likes
-      </td>
-      <td>Pending</td>
-      <td>Manual</td>
-      <td><span class="nowrap">2016-01-27</span><span class="nowrap">15:13:52</span></td>
-    </tr>
-    <tr>
-      <td>55892</td>
-      <td>spiderfady</td>
-      <td class="link">/followers</td>
-      <td>1800</td>
-      <td class="service">
-        <span class="label-id">3</span> Real Views
-      </td>
-      <td>Canceled</td>
-      <td>Auto</td>
-      <td><span class="nowrap">2016-01-27</span><span class="nowrap">15:13:52</span></td>
-    </tr>
-    <tr>
-      <td>55891</td>
-      <td>spiderfady</td>
-      <td class="link">/com.usk</td>
-      <td>1800</td>
-      <td class="service">
-        <span class="label-id">15</span> Views
-      </td>
-      <td>Canceled</td>
-      <td>Auto</td>
-      <td><span class="nowrap">2016-01-27</span><span class="nowrap">15:13:52</span></td>
-    </tr>
-    <tr>
-      <td>52137</td>
-      <td>gulaka</td>
-      <td class="link">/p/BMD5RzxgRke/</td>
-      <td>1800</td>
-      <td class="service">
-        <span class="label-id">5</span> Comment
-      </td>
-      <td>Error</td>
-      <td>Auto</td>
-      <td><span class="nowrap">2016-01-27</span><span class="nowrap">15:13:52</span></td>
-    </tr>
+    <?php foreach ($orders as $order): ?>
+        <tr>
+            <td><?= $order['id'] ?></td>
+            <td><?= $order['user'] ?></td>
+            <td class="link"><?= $order['link'] ?></td>
+            <td><?= $order['quantity'] ?></td>
+            <td class="service">
+                <span class="label-id"><?= $services[$order['service_id']]['orders_count'] ?></span>
+                <?= $order['service']['name'] ?>
+            </td>
+            <td><?= $order->getStatusText() ?></td>
+            <td><?= $order->getModeText() ?></td>
+            <td>
+              <span class="nowrap"><?= $order->getDateText() ?></span>
+              <span class="nowrap"><?= $order->getTimeText() ?></span>
+            </td>
+        </tr>
+    <?php endforeach; ?>
     </tbody>
   </table>
   <div class="row">
     <div class="col-sm-8">
-
-      <nav>
-        <ul class="pagination">
-          <li class="disabled"><a href="" aria-label="Previous">&laquo;</a></li>
-          <li class="active"><a href="">1</a></li>
-          <li><a href="">2</a></li>
-          <li><a href="">3</a></li>
-          <li><a href="">4</a></li>
-          <li><a href="">5</a></li>
-          <li><a href="">6</a></li>
-          <li><a href="">7</a></li>
-          <li><a href="">8</a></li>
-          <li><a href="">9</a></li>
-          <li><a href="">10</a></li>
-          <li><a href="" aria-label="Next">&raquo;</a></li>
-        </ul>
-      </nav>
-
+      <?= LinkPager::widget(['pagination' => $pagination]) ?>
     </div>
     <div class="col-sm-4 pagination-counters">
-      1 to 100 of 3263
+      <?php if ($pagination->getPageCount() > 1): ?>
+        <?= $pagination->getPage() + 1 ?>
+          to
+        <?= $pagination->getPageCount() ?>
+          of
+        <?= $pagination->totalCount ?>
+      <?php else: ?>
+        <?= $pagination->totalCount ?>
+      <?php endif ?>
     </div>
 
   </div>

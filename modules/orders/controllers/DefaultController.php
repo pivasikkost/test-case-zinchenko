@@ -5,9 +5,11 @@ namespace app\modules\orders\controllers;
 use Yii;
 use app\modules\orders\models\Orders;
 use app\modules\orders\models\OrdersSearch;
+use app\modules\orders\models\Services;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\Pagination;
 
 /**
  * DefaultController implements the CRUD actions for Orders model.
@@ -35,13 +37,36 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
+        $params = Yii::$app->request->get();
         $searchModel = new OrdersSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $query = $searchModel->search(Yii::$app->request->queryParams);
+
+        $services = Services::getServices();
+        $services_new = array();
+        foreach ($services as $service) {
+            $services_new[$service['id']] = $service;
+        }
+
+        $pagination = new Pagination([
+            'pageSize' => 100,
+            'totalCount' => $query->count(),
+        ]);
+
+        $orders = $query->orderBy('id desc')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
         $this->layout = 'orders';
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'orders' => $orders,
+
+            'pagination' => $pagination,
+            'modes' => Orders::getModes(),
+            'statuses' => Orders::getStatuses(),
+            'services' => $services_new,
+            'params' => $params,
         ]);
     }
 
