@@ -20,7 +20,7 @@ class OrdersAsset extends AssetBundle
     public $sourcePath = '@app/modules/orders/web';
 
     public $css = [
-        'bootstrap.min.css',
+        'css/bootstrap.min.css',
         'css/custom.css',
         'css/fonts.css'
     ];
@@ -29,8 +29,8 @@ class OrdersAsset extends AssetBundle
     ];
 
     public $js = [
-        'bootstrap.min.js',
-        'jquery.min.js',
+        'js/jquery.min.js',
+        'js/bootstrap.min.js',
     ];
 
     public $depends = [];
