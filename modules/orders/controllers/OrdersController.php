@@ -1,11 +1,11 @@
 <?php
 
-namespace app\modules\orders\controllers;
+namespace orders\controllers;
 
 use Yii;
-use app\modules\orders\models\Orders;
-use app\modules\orders\models\OrdersSearch;
-use app\modules\orders\models\Services;
+use app\models\Orders;
+use orders\models\search\OrdersSearch;
+use app\models\Services;
 use yii\web\Controller;
 use yii\data\Pagination;
 

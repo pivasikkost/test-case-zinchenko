@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\orders\models;
+namespace orders\models\search;
 
 use yii\base\Model;
-use yii\data\ActiveDataProvider;
-use app\modules\orders\models\Orders;
+use yii\db\ActiveQuery;
+use app\models\Orders;
 
 /**
  * OrdersSearch represents the model behind the search form of `app\modules\orders\models\Orders`.
@@ -36,7 +36,7 @@ class OrdersSearch extends Orders
      *
      * @param array $params
      *
-     * @return ActiveDataProvider
+     * @return ActiveQuery instance.
      */
     public function search($params)
     {

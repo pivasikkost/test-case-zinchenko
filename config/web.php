@@ -9,12 +9,13 @@ $config = [
     'bootstrap' => ['log'],
     'modules' => [
         'orders' => [
-            'class' => 'app\modules\orders\Module',
+            'class' => 'orders\Module',
         ],
     ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@orders' => '@app/modules/orders',
     ],
     'components' => [
         'request' => [
