@@ -12,9 +12,9 @@ use yii\filters\VerbFilter;
 use yii\data\Pagination;
 
 /**
- * DefaultController implements the CRUD actions for Orders model.
+ * OrdersController implements actions for Orders model.
  */
-class DefaultController extends Controller
+class OrdersController extends Controller
 {
     /**
      * {@inheritdoc}

@@ -15,6 +15,11 @@ class Module extends \yii\base\Module
     /**
      * {@inheritdoc}
      */
+    public $defaultRoute = 'orders';
+
+    /**
+     * {@inheritdoc}
+     */
     public function init()
     {
         parent::init();
