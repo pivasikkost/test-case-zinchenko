@@ -26,9 +26,9 @@ class OrdersController extends Controller
         $query = $searchModel->search($params);
 
         $services = Services::getServices();
-        $services_new = array();
+        $servicesNew = array();
         foreach ($services as $service) {
-            $services_new[$service['id']] = $service;
+            $servicesNew[$service['id']] = $service;
         }
 
         $pagination = new Pagination([
@@ -36,7 +36,7 @@ class OrdersController extends Controller
             'totalCount' => $query->count(),
         ]);
 
-        $orders = $query->orderBy('id desc')
+        $orders = $query
             ->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
@@ -49,7 +49,9 @@ class OrdersController extends Controller
             'pagination' => $pagination,
             'modes' => Orders::getModes(),
             'statuses' => Orders::getStatuses(),
-            'services' => $services_new,
+            'searchTypes' => Orders::getSearchTypes(),
+            'orderLabels' => $searchModel->attributeLabels(),
+            'services' => $servicesNew,
             'params' => $params,
         ]);
     }
@@ -64,17 +66,16 @@ class OrdersController extends Controller
         $searchModel = new OrdersSearch();
         $query = $searchModel->search($params);
 
-        $orders = $query->orderBy('id desc')
-            ->all();
+        $orders = $query->all();
         foreach ($orders as $order) {
-            $data .= $order->id.
-                    ';' . $order->user .
-                    ';' . $order->link .
-                    ';' . $order->quantity .
-                    ';' . $order->service->name .
-                    ';' . $order->getStatusText() .
-                    ';' . $order->getModeText() .
-                    ';' . $order->getDateText() . ' ' . $order->getTimeText() .
+            $data .= $order['id'].
+                    ';' . $order['user'] .
+                    ';' . $order['link'] .
+                    ';' . $order['quantity'] .
+                    ';' . $order['service_name'] .
+                    ';' . Orders::getStatusText($order['status']) .
+                    ';' . Orders::getModeText($order['mode']) .
+                    ';' . Orders::getDateText($order['created_at']) . ' ' . Orders::getTimeText($order['created_at']) .
                     "\r\n";
         }
         header('Content-type: text/csv');

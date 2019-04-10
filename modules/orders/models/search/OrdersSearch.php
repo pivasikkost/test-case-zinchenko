@@ -3,8 +3,9 @@
 namespace orders\models\search;
 
 use yii\base\Model;
-use yii\db\ActiveQuery;
+use yii\db\Query;
 use app\models\Orders;
+use app\models\Services;
 
 /**
  * OrdersSearch represents the model behind the search form of `app\modules\orders\models\Orders`.
@@ -36,29 +37,32 @@ class OrdersSearch extends Orders
      *
      * @param array $params
      *
-     * @return ActiveQuery instance.
+     * @return Query instance.
      */
     public function search($params)
     {
-        $query = Orders::find();
+        $query = (new Query())
+            ->select('o.*, s.name as service_name')
+            ->from(['o' => Orders::tableName()])
+            ->leftJoin(['s' => Services::tableName()], 's.id = o.service_id');
 
         $filter = [];
-        if (isset($params['status']) && $params['status']!== '') {
+        if (isset($params['status']) && $params['status'] !== '') {
             $filter['status'] = $params['status'];
         }
-        if (isset($params['mode']) && $params['mode']!== '') {
+        if (isset($params['mode']) && $params['mode'] !== '') {
             $filter['mode'] = $params['mode'];
         }
         if (!empty($params['search-type']) && isset($params['search'])) {
-            $attr = Orders::$search_types[$params['search-type']];
+            $attr = Orders::$searchTypes[$params['search-type']];
             $filter[$attr] = $params['search'];
         }
-        if (isset($params['service_id']) && $params['service_id']!== '') {
+        if (isset($params['service_id']) && $params['service_id'] !== '') {
             $filter['service_id'] = $params['service_id'];
         }
 
-        $query->joinWith('service');
         $query->filterWhere($filter);
+        $query->orderBy('o.id desc');
 
         return $query;
     }

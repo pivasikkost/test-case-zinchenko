@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use app\models\Orders;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\orders\models\OrdersSearch */
@@ -17,7 +18,7 @@ $this->title = Yii::t('app', 'Orders');
     <?php foreach ($statuses as $key => $status): ?>
         <li class="<?= (isset($params['status']) && $params['status'] != '' && $params['status'] == $key) ? 'active' : '' ?>">
             <a href="<?= Url::current(['status' => $key, 'mode' => null, 'service_id' => null, 'page' => null], true) ?>">
-                <?= $status ?>
+                <?= Yii::t('app', $status) ?>
             </a>
         </li>
     <?php endforeach; ?>
@@ -30,15 +31,11 @@ $this->title = Yii::t('app', 'Orders');
           <span class="input-group-btn search-select-wrap">
 
             <select class="form-control search-select" name="search-type">
-              <option value="1" <?= (isset($params['search-type']) && $params['search-type'] == 1) ? 'selected' : '' ?>>
-                <?= Yii::t('app', 'Order ID') ?>
-              </option>
-              <option value="2" <?= (isset($params['search-type']) && $params['search-type'] == 2) ? 'selected' : '' ?>>
-                <?= Yii::t('app', 'Link') ?>
-              </option>
-              <option value="3" <?= (isset($params['search-type']) && $params['search-type'] == 3) ? 'selected' : '' ?>>
-                <?= Yii::t('app', 'Username') ?>
-              </option>
+                <?php foreach ($searchTypes as $key => $type): ?>
+                    <option value="$key" <?= (isset($params['search-type']) && $params['search-type'] == $key) ? 'selected' : '' ?>>
+                        <?= Yii::t('app', $orderLabels[$type]) ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
             </span>
@@ -69,7 +66,7 @@ $this->title = Yii::t('app', 'Orders');
                 <li class="<?= (isset($params['service_id']) && $params['service_id'] == $key) ? 'active' : '' ?>">
                     <a href="<?= Url::current(['service_id' => $key, 'page' => null], true) ?>">
                         <span class="label-id"><?= $service['orders_count'] ?></span>
-                        <?= $service['name'] ?>
+                        <?= Yii::t('app', $service['name']) ?>
                     </a>
                 </li>
             <?php endforeach; ?>
@@ -92,7 +89,7 @@ $this->title = Yii::t('app', 'Orders');
             <?php foreach ($modes as $key => $mode): ?>
                 <li class="<?= (isset($params['mode']) && $params['mode'] == $key) ? 'active' : '' ?>">
                     <a href="<?= Url::current(['mode' => $key, 'page' => null], true) ?>">
-                      <?= $mode ?>
+                      <?= Yii::t('app', $mode) ?>
                     </a>
                 </li>
             <?php endforeach; ?>
@@ -111,13 +108,13 @@ $this->title = Yii::t('app', 'Orders');
             <td><?= $order['quantity'] ?></td>
             <td class="service">
                 <span class="label-id"><?= $services[$order['service_id']]['orders_count'] ?></span>
-                <?= $order['service']['name'] ?>
+                <?= Yii::t('app', $services[$order['service_id']]['name']) ?>
             </td>
-            <td><?= $order->getStatusText() ?></td>
-            <td><?= $order->getModeText() ?></td>
+            <td><?= Yii::t('app', Orders::getStatusText($order['status'])) ?></td>
+            <td><?= Yii::t('app', Orders::getModeText($order['mode'])) ?></td>
             <td>
-              <span class="nowrap"><?= $order->getDateText() ?></span>
-              <span class="nowrap"><?= $order->getTimeText() ?></span>
+              <span class="nowrap"><?= Orders::getDateText($order['created_at']) ?></span>
+              <span class="nowrap"><?= Orders::getTimeText($order['created_at']) ?></span>
             </td>
         </tr>
     <?php endforeach; ?>

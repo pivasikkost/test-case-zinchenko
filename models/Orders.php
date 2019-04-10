@@ -18,23 +18,37 @@ use Yii;
  */
 class Orders extends \yii\db\ActiveRecord
 {
+    const STATUS_PENDING = 0;
+    const STATUS_IN_PROGRESS = 1;
+    const STATUS_COMPLETED = 2;
+    const STATUS_CANCELED = 3;
+    const STATUS_FAIL = 4;
+
+    const MODE_MANUAL = 0;
+    const MODE_AUTO = 1;
+
+    const SEARCH_TYPE_ID = 1;
+    const SEARCH_TYPE_LINK = 2;
+    const SEARCH_TYPE_USER = 3;
+
+
     protected  static $statuses = [
-        0 => 'Pending',
-        1 => 'In progress',
-        2 => 'Completed',
-        3 => 'Canceled',
-        4 => 'Error'
+        self::STATUS_PENDING => 'Pending',
+        self::STATUS_IN_PROGRESS => 'In progress',
+        self::STATUS_COMPLETED => 'Completed',
+        self::STATUS_CANCELED => 'Canceled',
+        self::STATUS_FAIL => 'Error'
     ];
 
     protected static $modes = [
-        0 => 'Manual',
-        1 => 'Auto',
+        self::MODE_MANUAL => 'Manual',
+        self::MODE_AUTO => 'Auto',
     ];
     
-    protected static $search_types = [
-        1 => 'orders.id',
-        2 => 'link',
-        3 => 'user'
+    protected static $searchTypes = [
+        self::SEARCH_TYPE_ID => 'id',
+        self::SEARCH_TYPE_LINK => 'link',
+        self::SEARCH_TYPE_USER => 'user'
     ];
 
     /**
@@ -51,6 +65,14 @@ class Orders extends \yii\db\ActiveRecord
     public static function getModes()
     {
         return self::$modes;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSearchTypes()
+    {
+        return self::$searchTypes;
     }
 
     /**
@@ -95,24 +117,40 @@ class Orders extends \yii\db\ActiveRecord
         return $this->hasOne(Services::class, ['id' => 'service_id']);
     }
 
-    public function getStatusText()
+    /**
+     * @param int $status
+     * @return string
+     */
+    public static function getStatusText($status)
     {
-        return self::$statuses[(int)$this->status];
+        return self::$statuses[(int)$status];
     }
 
-    public function getModeText()
+    /**
+     * @param int $mode
+     * @return string
+     */
+    public static function getModeText($mode)
     {
-        return self::$modes[(int)$this->mode];
+        return self::$modes[(int)$mode];
     }
 
-    public function getDateText()
+    /**
+     * @param int $created_at
+     * @return string
+     */
+    public static function getDateText($created_at)
     {
-        return gmdate("Y-m-d", $this->created_at);
+        return gmdate("Y-m-d", $created_at);
     }
 
-    public function getTimeText()
+    /**
+     * @param int $created_at
+     * @return string
+     */
+    public static function getTimeText($created_at)
     {
-        return gmdate("H:i:s", $this->created_at);
+        return gmdate("H:i:s", $created_at);
     }
 
 }
