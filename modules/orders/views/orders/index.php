@@ -4,20 +4,23 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use app\helpers\CustomFormatConverter;
 use yii\widgets\LinkPager;
+use app\widgets\PaginationCounters;
 use app\models\Orders;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\orders\models\OrdersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Orders');
+$this->title = $title;
 ?>
 <ul class="nav nav-tabs p-b">
-    <li class="<?= !isset($params['status']) || $params['status'] == '' ? 'active' : '' ?>">
-        <a href="<?= Url::current(['status' => null, 'mode' => null, 'service_id' => null, 'page' => null], true) ?>"><?= Yii::t('app', 'All orders') ?></a>
-    </li>
+    <?php $statuses = ['' => 'All'] + $statuses ?>
     <?php foreach ($statuses as $key => $status): ?>
-        <li class="<?= (isset($params['status']) && $params['status'] != '' && $params['status'] == $key) ? 'active' : '' ?>">
+        <li class="<?=
+            (isset($params['status']) && ctype_digit($params['status']) && ($params['status'] == $key))
+            || ($key === '' && (!isset($params['status']) || $params['status'] === ''))
+            ? 'active' : ''
+        ?>">
             <a href="<?= Url::current(['status' => $key, 'mode' => null, 'service_id' => null, 'page' => null], true) ?>">
                 <?= Yii::t('app', $status) ?>
             </a>
@@ -25,7 +28,6 @@ $this->title = Yii::t('app', 'Orders');
     <?php endforeach; ?>
     <li class="pull-right custom-search">
       <form class="form-inline" method="get">
-        <input hidden type="text" name="r" value="orders">
         <input hidden type="text" name="status" value="<?= isset($params['status']) ? $params['status'] : '' ?>" />
         <div class="input-group">
           <input type="text" name="search" class="form-control" value="<?= isset($params['search']) ? $params['search'] : '' ?>" placeholder="Search orders">
@@ -34,7 +36,7 @@ $this->title = Yii::t('app', 'Orders');
             <select class="form-control search-select" name="search-type">
                 <?php foreach ($searchTypes as $key => $type): ?>
                     <option value="$key" <?= (isset($params['search-type']) && $params['search-type'] == $key) ? 'selected' : '' ?>>
-                        <?= Yii::t('app', $orderLabels[$type]) ?>
+                        <?= $orderLabels[$type] ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -111,8 +113,8 @@ $this->title = Yii::t('app', 'Orders');
                 <span class="label-id"><?= $services[$order['service_id']]['orders_count'] ?></span>
                 <?= Yii::t('app', $services[$order['service_id']]['name']) ?>
             </td>
-            <td><?= Yii::t('app', Orders::getStatusText($order['status'])) ?></td>
-            <td><?= Yii::t('app', Orders::getModeText($order['mode'])) ?></td>
+            <td><?= Yii::t('app', $order['status']) ?></td>
+            <td><?= Yii::t('app', $order['mode']) ?></td>
             <td>
               <span class="nowrap"><?= CustomFormatConverter::getDateText($order['created_at']) ?></span>
               <span class="nowrap"><?= CustomFormatConverter::getTimeText($order['created_at']) ?></span>
@@ -123,23 +125,20 @@ $this->title = Yii::t('app', 'Orders');
   </table>
   <div class="row">
     <div class="col-sm-8">
-      <?= LinkPager::widget(['pagination' => $pagination]) ?>
+        <nav>
+            <?= LinkPager::widget(['pagination' => $pagination]) ?>
+        </nav>
     </div>
-    <div class="col-sm-4 pagination-counters">
-      <div class="col-sm-12">
-      <?php if ($pagination->getPageCount() > 1): ?>
-        <?= $pagination->getPage() + 1 ?>
-          to
-        <?= $pagination->getPageCount() ?>
-          of
-        <?= $pagination->totalCount ?>
-      <?php else: ?>
-        <?= $pagination->totalCount ?>
-      <?php endif ?>
-      </div>
-      <div class="col-sm-12">
-      <?= Html::a(Yii::t('app', 'Save result'), $params+['export'], ['class' => 'link']) ?>
-      </div>
+    <?= PaginationCounters::widget(
+            ['pagination' => $pagination,
+            'options' => ['class' => 'col-sm-4 pagination-counters']]
+    ) ?>
+    <div class="col-sm-4 push-sm-8 text-right">
+      <?= Html::a(
+          Yii::t('app', 'Save result'),
+          $params + ['export'],
+          ['class' => 'link', 'target' => 'blank']
+      ) ?>
     </div>
 
   </div>

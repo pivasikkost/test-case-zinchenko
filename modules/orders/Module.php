@@ -20,6 +20,11 @@ class Module extends \yii\base\Module
     /**
      * {@inheritdoc}
      */
+    public $layout = 'orders';
+
+    /**
+     * {@inheritdoc}
+     */
     public function init()
     {
         parent::init();

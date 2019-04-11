@@ -75,6 +75,12 @@ class OrdersSearch extends Orders
             ->limit($pagination->limit)
             ->all();
 
+        foreach ($orders as &$order) {
+            $order['status'] = Orders::getStatusText($order['status']);
+            $order['mode'] = Orders::getModeText($order['mode']);
+        }
+        unset($order);
+
         return [
             'orders' => $orders,
             'pagination' => $pagination,

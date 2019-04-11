@@ -25,9 +25,8 @@ class OrdersController extends Controller
         $searchModel = new OrdersSearch();
         $searchResult = $searchModel->search($params);
 
-        $this->layout = 'orders';
-
         return $this->render('index', [
+            'title' => Yii::t('app', 'Orders'),
             'orders' => $searchResult['orders'],
             'pagination' => $searchResult['pagination'],
             'modes' => Orders::getModes(),
