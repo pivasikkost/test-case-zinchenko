@@ -2,6 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$configLocal = require __DIR__ . '/web-local.php';
 
 $config = [
     'id' => 'basic',
@@ -78,4 +79,4 @@ if (YII_ENV_DEV) {
     ];
 }
 
-return $config;
+return !empty($configLocal) ? array_merge($config, $configLocal) : $config;
