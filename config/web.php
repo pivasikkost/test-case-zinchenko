@@ -8,6 +8,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'defaultRoute' => 'orders',
     'modules' => [
         'orders' => [
             'class' => 'orders\Module',
