@@ -46,13 +46,19 @@ class Services extends ActiveRecord
 
     public static function getServices()
     {
-        $query = new Query();
-        $query->select(['count(*) as orders_count', 'services.*' ]);
-        $query->from('services');
-        $query->leftJoin('orders', 'orders.service_id = services.id');
-        $query->groupBy('id');
+        $query = (new Query())
+            ->select(['count(*) as orders_count', 'services.*' ])
+            ->from('services')
+            ->leftJoin('orders', 'orders.service_id = services.id')
+            ->groupBy('id')
+            ->all();
 
-        return $query->all();
+        $services = array();
+        foreach ($query as $service) {
+            $services[$service['id']] = $service;
+        }
+
+        return $services;
     }
 
 }

@@ -124,7 +124,7 @@ class Orders extends ActiveRecord
      */
     public static function getStatusText($status)
     {
-        return self::$statuses[(int)$status];
+        return ctype_digit($status) ? self::$statuses[(int)$status] : '' ;
     }
 
     /**
@@ -133,7 +133,7 @@ class Orders extends ActiveRecord
      */
     public static function getModeText($mode)
     {
-        return self::$modes[(int)$mode];
+        return ctype_digit($mode) ? self::$modes[(int)$mode] : '' ;
     }
 
 }

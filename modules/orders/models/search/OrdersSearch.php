@@ -6,6 +6,7 @@ use yii\base\Model;
 use yii\db\Query;
 use app\models\Orders;
 use app\models\Services;
+use yii\data\Pagination;
 
 /**
  * OrdersSearch represents the model behind the search form of `app\modules\orders\models\Orders`.
@@ -37,7 +38,7 @@ class OrdersSearch extends Orders
      *
      * @param array $params
      *
-     * @return Query instance.
+     * @return array
      */
     public function search($params)
     {
@@ -64,6 +65,19 @@ class OrdersSearch extends Orders
         $query->filterWhere($filter);
         $query->orderBy('o.id desc');
 
-        return $query;
+        $pagination = new Pagination([
+            'pageSize' => 100,
+            'totalCount' => $query->count(),
+        ]);
+
+        $orders = $query
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return [
+            'orders' => $orders,
+            'pagination' => $pagination,
+        ];
     }
 }
