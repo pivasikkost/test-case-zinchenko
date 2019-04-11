@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use \yii\db\Query;
+use \yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "services".
@@ -11,7 +12,7 @@ use \yii\db\Query;
  * @property int $id
  * @property string $name
  */
-class Services extends \yii\db\ActiveRecord
+class Services extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -43,7 +44,8 @@ class Services extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getServices()  {
+    public static function getServices()
+    {
         $query = new Query();
         $query->select(['count(*) as orders_count', 'services.*' ]);
         $query->from('services');

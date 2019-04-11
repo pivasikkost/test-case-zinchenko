@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use \yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "orders".
@@ -16,7 +17,7 @@ use Yii;
  * @property int $created_at
  * @property int $mode 0 - Manual, 1 - Auto
  */
-class Orders extends \yii\db\ActiveRecord
+class Orders extends ActiveRecord
 {
     const STATUS_PENDING = 0;
     const STATUS_IN_PROGRESS = 1;
@@ -32,7 +33,7 @@ class Orders extends \yii\db\ActiveRecord
     const SEARCH_TYPE_USER = 3;
 
 
-    protected  static $statuses = [
+    protected static $statuses = [
         self::STATUS_PENDING => 'Pending',
         self::STATUS_IN_PROGRESS => 'In progress',
         self::STATUS_COMPLETED => 'Completed',

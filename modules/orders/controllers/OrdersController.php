@@ -59,7 +59,8 @@ class OrdersController extends Controller
     /**
      * Export Orders to csv file.
      */
-    public function actionExport() {
+    public function actionExport()
+    {
         $data = "ID;User;Link;Quantity;Service;Status;Mode;Created\r\n";
 
         $params = Yii::$app->request->get();
