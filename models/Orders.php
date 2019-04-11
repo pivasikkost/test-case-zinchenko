@@ -136,22 +136,4 @@ class Orders extends ActiveRecord
         return self::$modes[(int)$mode];
     }
 
-    /**
-     * @param int $created_at
-     * @return string
-     */
-    public static function getDateText($created_at)
-    {
-        return gmdate("Y-m-d", $created_at);
-    }
-
-    /**
-     * @param int $created_at
-     * @return string
-     */
-    public static function getTimeText($created_at)
-    {
-        return gmdate("H:i:s", $created_at);
-    }
-
 }

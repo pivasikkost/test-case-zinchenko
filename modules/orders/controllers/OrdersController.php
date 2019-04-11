@@ -3,6 +3,7 @@
 namespace orders\controllers;
 
 use Yii;
+use app\helpers\CustomFormatConverter;
 use app\models\Orders;
 use orders\models\search\OrdersSearch;
 use app\models\Services;
@@ -76,7 +77,8 @@ class OrdersController extends Controller
                     ';' . $order['service_name'] .
                     ';' . Orders::getStatusText($order['status']) .
                     ';' . Orders::getModeText($order['mode']) .
-                    ';' . Orders::getDateText($order['created_at']) . ' ' . Orders::getTimeText($order['created_at']) .
+                    ';' . CustomFormatConverter::getDateText($order['created_at']) .
+                    ' ' . CustomFormatConverter::getTimeText($order['created_at']) .
                     "\r\n";
         }
         header('Content-type: text/csv');

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use app\helpers\CustomFormatConverter;
 use yii\widgets\LinkPager;
 use app\models\Orders;
 
@@ -113,8 +114,8 @@ $this->title = Yii::t('app', 'Orders');
             <td><?= Yii::t('app', Orders::getStatusText($order['status'])) ?></td>
             <td><?= Yii::t('app', Orders::getModeText($order['mode'])) ?></td>
             <td>
-              <span class="nowrap"><?= Orders::getDateText($order['created_at']) ?></span>
-              <span class="nowrap"><?= Orders::getTimeText($order['created_at']) ?></span>
+              <span class="nowrap"><?= CustomFormatConverter::getDateText($order['created_at']) ?></span>
+              <span class="nowrap"><?= CustomFormatConverter::getTimeText($order['created_at']) ?></span>
             </td>
         </tr>
     <?php endforeach; ?>
