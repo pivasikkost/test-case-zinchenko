@@ -63,8 +63,4 @@ php yii migrate
 
 ### Verifying the installation
 
-After the done actions you need only to configure the web server and go to url
-```
-/index.php?r=orders
-```
-
+After the done actions you need only to configure the web server and go to host url
