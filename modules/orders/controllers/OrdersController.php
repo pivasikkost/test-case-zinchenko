@@ -6,7 +6,6 @@ use Yii;
 use app\helpers\CustomFormatConverter;
 use app\models\Orders;
 use orders\models\search\OrdersSearch;
-use app\models\Services;
 use yii\web\Controller;
 
 /**
@@ -22,20 +21,15 @@ class OrdersController extends Controller
     public function actionIndex()
     {
         $params = Yii::$app->request->get();
-        $searchModel = new OrdersSearch();
-        $searchResult = $searchModel->search($params);
+        $searchResult = (new OrdersSearch())->search($params);
 
-        return $this->render('index', [
-            'title' => Yii::t('app', 'Orders'),
-            'orders' => $searchResult['orders'],
-            'pagination' => $searchResult['pagination'],
-            'modes' => Orders::getModes(),
-            'statuses' => Orders::getStatuses(),
-            'searchTypes' => Orders::getSearchTypes(),
-            'orderLabels' => $searchModel->attributeLabels(),
-            'services' => Services::getServices(),
-            'params' => $params,
-        ]);
+        return $this->render(
+            'index',
+            array_merge($searchResult, [
+                'title' => Yii::t('app', 'Orders'),
+                'params' => $params,
+            ])
+        );
     }
 
     /**
@@ -43,29 +37,11 @@ class OrdersController extends Controller
      */
     public function actionExport()
     {
-        $data = "ID;User;Link;Quantity;Service;Status;Mode;Created\r\n";
-
-        $params = Yii::$app->request->get();
-        $searchModel = new OrdersSearch();
-        $searchResult = $searchModel->search($params);
-
-        foreach ($searchResult['orders'] as $order) {
-            $data .= $order['id'].
-                    ';' . $order['user'] .
-                    ';' . $order['link'] .
-                    ';' . $order['quantity'] .
-                    ';' . $order['service_name'] .
-                    ';' . Orders::getStatusText($order['status']) .
-                    ';' . Orders::getModeText($order['mode']) .
-                    ';' . CustomFormatConverter::getDateText($order['created_at']) .
-                    ' ' . CustomFormatConverter::getTimeText($order['created_at']) .
-                    "\r\n";
-        }
-
-        header('Content-type: text/csv');
-        header('Content-Disposition: attachment; filename="export_' . date('d.m.Y') . '.csv"');
-        echo iconv('utf-8', 'windows-1251', $data); //fix for Windows
-        exit;
+        Yii::$app->response->sendContentAsFile(
+            (new OrdersSearch())->searchAndExport(
+                Yii::$app->request->get()
+            ),
+            'export_' . date('d.m.Y') . '.csv'
+        )->send();
     }
-
 }

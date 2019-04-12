@@ -2,6 +2,8 @@
 
 namespace orders\models\search;
 
+use app\helpers\CustomFormatConverter;
+use Yii;
 use yii\base\Model;
 use yii\db\Query;
 use app\models\Orders;
@@ -34,7 +36,7 @@ class OrdersSearch extends Orders
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Returns orders and needed data by search query applied
      *
      * @param array $params
      *
@@ -84,6 +86,40 @@ class OrdersSearch extends Orders
         return [
             'orders' => $orders,
             'pagination' => $pagination,
+            'modes' => parent::getModes(),
+            'statuses' => parent::getStatuses(),
+            'searchTypes' => parent::getSearchTypes(),
+            'orderLabels' => $this->attributeLabels(),
+            'services' => Services::getServices(),
         ];
+    }
+
+    /**
+     * Returns orders as csv format text by search query applied
+     *
+     * @param array $params
+     *
+     * @return string
+     */
+    public function searchAndExport($params)
+    {
+        $data = "ID;User;Link;Quantity;Service;Status;Mode;Created\r\n";
+
+        $searchResult = (new OrdersSearch())->search($params);
+
+        foreach ($searchResult['orders'] as $order) {
+            $data .= $order['id'].
+                ';' . $order['user'] .
+                ';' . $order['link'] .
+                ';' . $order['quantity'] .
+                ';' . $order['service_name'] .
+                ';' . $order['status'] .
+                ';' . $order['mode'] .
+                ';' . CustomFormatConverter::getDateText($order['created_at']) .
+                ' ' . CustomFormatConverter::getTimeText($order['created_at']) .
+                "\r\n";
+        }
+
+        return $data;
     }
 }

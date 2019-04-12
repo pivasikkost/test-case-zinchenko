@@ -106,9 +106,9 @@ class Orders extends ActiveRecord
             'user' => Yii::t('app', 'User'),
             'link' => Yii::t('app', 'Link'),
             'quantity' => Yii::t('app', 'Quantity'),
-            'service_id' => Yii::t('app', 'Service ID'),
+            'service_id' => Yii::t('app', 'Service'),
             'status' => Yii::t('app', 'Status'),
-            'created_at' => Yii::t('app', 'Created At'),
+            'created_at' => Yii::t('app', 'Created'),
             'mode' => Yii::t('app', 'Mode'),
         ];
     }
