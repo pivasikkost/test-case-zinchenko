@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use \yii\db\ActiveRecord;
+use yii\db\ActiveRecordInterface;
 
 /**
  * This is the model class for table "orders".
@@ -113,6 +114,11 @@ class Orders extends ActiveRecord
         ];
     }
 
+    /**
+     * Establishes a connection to the table services
+     *
+     * @return string
+     */
     public function getService()
     {
         return $this->hasOne(Services::class, ['id' => 'service_id']);

@@ -3,7 +3,6 @@
 namespace orders\models\search;
 
 use app\helpers\CustomFormatConverter;
-use Yii;
 use yii\base\Model;
 use yii\db\Query;
 use app\models\Orders;

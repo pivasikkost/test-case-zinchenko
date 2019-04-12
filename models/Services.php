@@ -44,6 +44,11 @@ class Services extends ActiveRecord
         ];
     }
 
+    /**
+     * Returns services data with count of orders for each service
+     *
+     * @return array
+     */
     public static function getServices()
     {
         $query = (new Query())
