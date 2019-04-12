@@ -1,11 +1,13 @@
 <?php
 
+$configLocalPath = __DIR__ . '/web-local.php';
+$configLocal = file_exists($configLocalPath) ? include $configLocalPath : array();
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-$configLocal = require __DIR__ . '/web-local.php';
 
 $config = [
-    'id' => 'basic',
+    'id' => 'test-case-zinchenko',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'defaultRoute' => 'orders',
@@ -23,23 +25,6 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'BbrGsp-F2CxieEwA0MBwW9UyVxHPE-ay',
-        ],
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

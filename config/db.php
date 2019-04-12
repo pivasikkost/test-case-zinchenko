@@ -1,6 +1,7 @@
 <?php
 
-$dbLocal = include __DIR__ . '/db-local.php';
+$dbLocalPath = __DIR__ . '/db-local.php';
+$dbLocal = file_exists($dbLocalPath) ? include $dbLocalPath : array();
 
 $db = [
     'class' => '<db-connection-class>',

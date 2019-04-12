@@ -4,4 +4,8 @@
 //defined('YII_DEBUG') or define('YII_DEBUG', true);
 //defined('YII_ENV') or define('YII_ENV', 'dev');
 
-include __DIR__ . '/environments-local.php';
+
+$environmentsLocalPath = __DIR__ . '/environments-local.php';
+if (file_exists($environmentsLocalPath)) {
+    include $environmentsLocalPath;
+}
