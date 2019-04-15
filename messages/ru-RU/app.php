@@ -45,4 +45,10 @@ return [
     'Mentions Hashtag' => 'Упоминания хештегом',
     'Mentions User Followers' => 'Упоминания подписчиков',
     'Mentions Media Likers' => 'Упоминания лайкнувших контент',
+
+    'Name' => 'Имя',
+    'Save result' => 'Сохранить результат',
+    'Toggle navigation' => 'Тумблер навигации',
+    'of' => 'из',
+    'to' => 'до',
 ];
