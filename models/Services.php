@@ -57,14 +57,10 @@ class Services extends ActiveRecord
             ->leftJoin('orders', 'orders.service_id = services.id')
             ->groupBy('id')
             ->orderBy('orders_count DESC')
+            ->indexBy('id')
             ->all();
 
-        $services = array();
-        foreach ($query as $service) {
-            $services[$service['id']] = $service;
-        }
-
-        return $services;
+        return $query;
     }
 
 }
