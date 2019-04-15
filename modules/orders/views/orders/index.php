@@ -22,46 +22,39 @@ $this->title = $title;
 <ul class="nav nav-tabs p-b">
     <?php $statuses = ['' => 'All'] + $statuses ?>
     <?php foreach ($statuses as $key => $status): ?>
-        <li class="<?=
-                (isset($params['status']) && ctype_digit($params['status']) && ($params['status'] == $key))
-                || ($key === '' && (!isset($params['status']) || $params['status'] === ''))
-                ? 'active'
-                : ''
-        ?>">
-            <a href="<?= Url::current([
+        <li class="<?php if ((isset($params['status']) && ctype_digit($params['status']) && ($params['status'] == $key))
+                            || ($key === '' && (!isset($params['status']) || $params['status'] === ''))): ?>
+                    active
+                <?php endif; ?>
+        ">
+            <?= Html::a(Yii::t('app', $status),
+                        Url::current([
                             'status' => $key,
                             'mode' => null,
                             'service_id' => null,
                             'page' => null
-                         ], true)
-            ?>">
-                <?= Yii::t('app', $status) ?>
-            </a>
+                        ], true)
+            ) ?>
         </li>
     <?php endforeach; ?>
     <li class="pull-right custom-search">
         <form class="form-inline" method="get">
-            <input hidden type="text" name="status" value="<?= isset($params['status']) ? $params['status'] : '' ?>" />
             <div class="input-group">
-                <input type="text"
-                       name="search"
-                       class="form-control"
-                       value="<?= isset($params['search']) ? $params['search'] : '' ?>"
-                       placeholder="<?= Yii::t('app', 'Search orders') ?>"
-                >
+                <?= Html::input('text', 'search', $params['search'] ?? null, [
+                        'placeholder' => Yii::t('app', 'Search orders'),
+                        'class' => 'form-control',
+                ]) ?>
                 <span class="input-group-btn search-select-wrap">
-                    <select class="form-control search-select" name="search-type">
-                        <?php foreach ($searchTypes as $key => $type): ?>
-                            <option value="<?= $key ?>"
-                                    <?= (isset($params['search-type']) && $params['search-type'] == $key)
-                                        ? 'selected'
-                                        : ''
-                                    ?>
-                            >
-                                <?= $orderLabels[$type] ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                    <?= Html::dropDownList(
+                            'search-type',
+                            $params['search-type'] ?? null,
+                            array_map(function($type) use ($orderLabels) {
+                                    return $orderLabels[$type];
+                                },
+                                $searchTypes
+                            ),
+                            ['class' => 'form-control search-select']
+                    ) ?>
                     <button type="submit" class="btn btn-default">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
@@ -96,10 +89,10 @@ $this->title = $title;
                         </a>
                     </li>
                     <?php foreach ($services as $key => $service): ?>
-                        <li class="<?= (isset($params['service_id']) && $params['service_id'] == $key)
-                                        ? 'active'
-                                        : ''
-                        ?>">
+                        <li class="<?php if (isset($params['service_id']) && $params['service_id'] == $key): ?>
+                                        active
+                                   <?php endif; ?>
+                        ">
                             <a href="<?= Url::current(['service_id' => $key, 'page' => null], true) ?>">
                                 <span class="label-id"><?= $service['orders_count'] ?></span>
                                 <?= Yii::t('app', $service['name']) ?>

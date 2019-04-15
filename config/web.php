@@ -42,7 +42,7 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                // ...
+                'orders/orders/index/<status:\d+>' => 'orders/orders/index',
             ],
         ],
         'i18n' => [
