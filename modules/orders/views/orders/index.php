@@ -47,7 +47,7 @@ $this->title = $title;
                        name="search"
                        class="form-control"
                        value="<?= isset($params['search']) ? $params['search'] : '' ?>"
-                       placeholder="Search orders"
+                       placeholder="<?= Yii::t('app', 'Search orders') ?>"
                 >
                 <span class="input-group-btn search-select-wrap">
                     <select class="form-control search-select" name="search-type">
