@@ -52,7 +52,7 @@ $this->title = $title;
                 <span class="input-group-btn search-select-wrap">
                     <select class="form-control search-select" name="search-type">
                         <?php foreach ($searchTypes as $key => $type): ?>
-                            <option value="$key"
+                            <option value="<?= $key ?>"
                                     <?= (isset($params['search-type']) && $params['search-type'] == $key)
                                         ? 'selected'
                                         : ''

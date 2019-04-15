@@ -50,17 +50,17 @@ class OrdersSearch extends Orders
 
         $filter = [];
         if (isset($params['status']) && $params['status'] !== '') {
-            $filter['status'] = $params['status'];
+            $filter['o.status'] = $params['status'];
         }
         if (isset($params['mode']) && $params['mode'] !== '') {
-            $filter['mode'] = $params['mode'];
+            $filter['o.mode'] = $params['mode'];
         }
         if (!empty($params['search-type']) && isset($params['search'])) {
             $attr = Orders::$searchTypes[$params['search-type']];
-            $filter[$attr] = $params['search'];
+            $filter['o.' . $attr] = $params['search'];
         }
         if (isset($params['service_id']) && $params['service_id'] !== '') {
-            $filter['service_id'] = $params['service_id'];
+            $filter['o.service_id'] = $params['service_id'];
         }
 
         $query->filterWhere($filter);
