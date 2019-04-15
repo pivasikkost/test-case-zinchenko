@@ -4,27 +4,28 @@ return [
     'Orders' => 'Заказы',
 
     'All' => 'Все',
-    //Statuses
+    // Statuses
     'Pending' => 'В ожидании',
     'In progress' => 'В ходе выполнения',
     'Completed' => 'Завершён',
     'Canceled' => 'Отменён',
     'Error' => 'Ошибка',
 
+    'Search orders' => 'Искать заказы',
+
+    // Orders attribute labels
     'ID' => 'ИД',
     'User' => 'Пользователь',
     'Link' => 'Ссылка',
     'Quantity' => 'Количество',
+    'Service' => 'Сервис',
     'Status' => 'Статус',
-    'Created' => 'Создан',
     'Mode' => 'Режим',
+    'Created' => 'Создан',
 
-    //Modes
+    // Modes
     'Manual' => 'Ручной',
     'Auto' => 'Авто',
-
-    'Search orders' => 'Искать заказы',
-    'Service' => 'Сервис',
 
     // Services (db)
     'Likes' => 'Лайки',
