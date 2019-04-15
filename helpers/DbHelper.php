@@ -6,7 +6,7 @@ namespace app\helpers;
  * DbHelper provides functionality to get specific information from the database.
  *
  * @author Konstantin Zosimenko <pivasikkost@gmail.com>
- * @since 1.0
+ * @since 2.0
  */
 class DbHelper
 {

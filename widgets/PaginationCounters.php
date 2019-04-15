@@ -18,7 +18,7 @@ use yii\helpers\Html;
  * Note that PaginationCounters only generates text.
  *
  * @author Konstantin Zosimenko <pivasikost@gmail.com>
- * @since 1.0
+ * @since 2.0
  */
 class PaginationCounters extends Widget
 {

@@ -8,7 +8,7 @@ namespace app\helpers;
  * It provides functions to convert date format patterns between different conventions.
  *
  * @author Konstantin Zosimenko <pivasikkost@gmail.com>
- * @since 1.0
+ * @since 2.0
  */
 class CustomFormatConverter
 {
